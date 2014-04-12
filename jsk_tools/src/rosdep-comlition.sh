@@ -1,10 +1,3 @@
-red='\e[0;31m'
-NC='\e[0m'
-
-set -e
-trap 'echo -e "${red}you need to source rosbash related files previously.${NC}"
-' ERR
-
 function _roscomplete_rosdep {
     local arg opts
     COMPREPLY=()
@@ -14,8 +7,14 @@ function _roscomplete_rosdep {
         opts="check install db init keys resolve update what-needs where-defined"
         COMPREPLY=($(compgen -W "$opts" -- ${arg}))
     else
-        opts=`rospack list-names`
-        COMPREPLY=($(compgen -W "$opts" -- ${arg}))
+        case ${COMP_WORDS[1]} in
+            db|init|update)
+                ;;
+            *)
+                opts=`rospack list-names`
+                COMPREPLY=($(compgen -W "$opts" -- ${arg}))
+                ;;
+        esac
     fi
 }
 

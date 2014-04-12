@@ -26,30 +26,31 @@ catkin_package(
 ## Build ##
 ###########
 
-include_directories(
-  include
-  ${catkin_INCLUDE_DIRS}
-)
+if ( EXISTS /opt/softkinect/DepthSenseSDK )
+  include_directories(
+    include
+    ${catkin_INCLUDE_DIRS}
+    )
 
-## Declare a cpp library
-add_library(jsk_creative_gesture_ros
-  SHARED
-  src/jsk_creative_gesture_ros.cpp
-)
-target_link_libraries(jsk_creative_gesture_ros ${catkin_LIBRARIES} ${pcl_ros_LIBRARIES} DepthSense)
-add_dependencies(jsk_creative_gesture_ros ${PROJECT_NAME}_gencpp ${PROJECT_NAME}_gencfg)
+  ## Declare a cpp library
+  add_library(jsk_creative_gesture_ros
+    SHARED
+    src/jsk_creative_gesture_ros.cpp
+    )
+  target_link_libraries(jsk_creative_gesture_ros ${catkin_LIBRARIES} ${pcl_ros_LIBRARIES} DepthSense)
+  add_dependencies(jsk_creative_gesture_ros ${PROJECT_NAME}_gencpp ${PROJECT_NAME}_gencfg)
 
 
-## Declare a cpp executable
-add_executable(open_creative_gesture src/open_creative_gesture.cpp)
+  ## Declare a cpp executable
+  add_executable(open_creative_gesture src/open_creative_gesture.cpp)
 
-## Specify libraries to link a library or executable target against
-target_link_libraries(open_creative_gesture
-  ${catkin_LIBRARIES}
-  jsk_creative_gesture_ros
-)
-add_dependencies(open_creative_gesture jsk_creative_gesture_launch_generate_messages_cpp)
-
+  ## Specify libraries to link a library or executable target against
+  target_link_libraries(open_creative_gesture
+    ${catkin_LIBRARIES}
+    jsk_creative_gesture_ros
+    )
+  add_dependencies(open_creative_gesture jsk_creative_gesture_launch_generate_messages_cpp)
+endif( EXISTS /opt/softkinect/DepthSenseSDK)
 #############
 ## Install ##
 #############
